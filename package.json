@@ -1,6 +1,6 @@
 {
   "name": "generator-ads",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Ad Format Generator",
   "homepage": "https://github.com/Kemicalish/generator-ads",
   "author": {
@@ -45,5 +45,5 @@
   "scripts": {
     "test": "gulp"
   },
-  "private": true
+  "private": false
 }

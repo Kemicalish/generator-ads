@@ -3,7 +3,7 @@ var Generator = require('yeoman-generator');
 let _ = require('lodash');
 let settings = {
   STATIC_SKIN_DIRNAME: 'staticskin',
-  DESTINATION_DIRNAME: 'work'
+  DESTINATION_DIRNAME: '.'
 };
 const mkdirp = require('mkdirp');
 
