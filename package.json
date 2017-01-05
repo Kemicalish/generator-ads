@@ -1,6 +1,6 @@
 {
   "name": "generator-ads",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Ad Format Generator",
   "homepage": "https://github.com/Kemicalish/generator-ads",
   "author": {
@@ -21,6 +21,8 @@
     "yosay": "^1.2.1"
   },
   "devDependencies": {
+    "babel-polyfill": "^6.20.0",
+    "babel-register": "^6.18.0",
     "eslint": "^3.1.1",
     "eslint-config-xo-space": "^0.15.0",
     "gulp": "^3.9.0",
@@ -43,7 +45,7 @@
   },
   "repository": "https://github.com/Kemicalish/generator-ads.git",
   "scripts": {
-    "test": "gulp"
+    "test": "mocha  --require babel-polyfill --compilers js:babel-register"
   },
   "private": false
 }

@@ -1,16 +1,12 @@
 'use strict';
-var Generator = require('yeoman-generator');
+const path = require('path');
+const Generator = require('yeoman-generator');
 let _ = require('lodash');
-let settings = {
-  STATIC_SKIN_DIRNAME: 'staticskin',
-  DESTINATION_DIRNAME: '.'
-};
+let settings = require('../conf.js');
 const mkdirp = require('mkdirp');
 
-const formats = [
+/*const formats = [
   ['staticskin', 'Static Skin'],
-  ['gulp', 'gulp'],
-  ['grunt', 'grunt  (soon)']
 ];
 
 function toChoices(arr) {
@@ -18,10 +14,11 @@ function toChoices(arr) {
     return {name: b[1], value: b[0]};
   });
 }
+*/
 
 module.exports = Generator.extend({
   prompting: function () {
-    var prompts = [{
+    const prompts = [{
       type: 'input',
       name: 'projectName',
       message: 'The Project Name (ex: CLIENTGAME_LAUNCH)',
@@ -51,19 +48,29 @@ module.exports = Generator.extend({
     );
 
     this.fs.copy(
-      this.templatePath(`${settings.STATIC_SKIN_DIRNAME}/custom/PROJECT_NAME_WEBSITE_NAME.jpg`),
-      this.destinationPath(`${settings.DESTINATION_DIRNAME}/${this.props.projectName}_${this.props.websiteName}.jpg`),
+      this.templatePath(path.join(
+        settings.STATIC_SKIN_DIRNAME,
+        'custom',
+        'PROJECT_NAME_WEBSITE_NAME.jpg')),
+      this.destinationPath(path.join(
+        settings.DESTINATION_DIRNAME,
+        `${this.props.projectName}_${this.props.websiteName}.jpg`)),
       _.merge({}, settings, this.props)
     );
 
     this.fs.copy(
-      this.templatePath(`${settings.STATIC_SKIN_DIRNAME}/custom/PSD/PROJECT_NAME_WEBSITE_NAME.psd`),
-      this.destinationPath(`${settings.DESTINATION_DIRNAME}/PSD/${this.props.projectName}_${this.props.websiteName}.psd`),
+      this.templatePath(path.join(settings.STATIC_SKIN_DIRNAME,
+        'custom',
+        'PSD',
+        'PROJECT_NAME_WEBSITE_NAME.psd')),
+      this.destinationPath(path.join(
+          settings.DESTINATION_DIRNAME,
+          'PSD',
+          `${this.props.projectName}_${this.props.websiteName}.psd`
+        )),
       _.merge({}, settings, this.props)
     );
-    mkdirp(this.destinationPath(`${settings.DESTINATION_DIRNAME}/FONT`), function (err) {
-
-    });
+    mkdirp(this.destinationPath(`${settings.DESTINATION_DIRNAME}/FONT`));
   },
 
   install: function () {

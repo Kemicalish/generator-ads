@@ -1,10 +1,9 @@
 'use strict';
-var path = require('path');
-var gulp = require('gulp');
-var eslint = require('gulp-eslint');
-var excludeGitignore = require('gulp-exclude-gitignore');
-var mocha = require('gulp-mocha');
-var plumber = require('gulp-plumber');
+const gulp = require('gulp');
+const eslint = require('gulp-eslint');
+const excludeGitignore = require('gulp-exclude-gitignore');
+const mocha = require('gulp-mocha');
+const plumber = require('gulp-plumber');
 
 gulp.task('static', function () {
   return gulp.src('**/*.js')
@@ -24,11 +23,11 @@ gulp.task('pre-test', function () {
 });
 
 gulp.task('test', ['pre-test'], function (cb) {
-  var mochaErr;
+  let mochaErr;
 
   gulp.src('test/**/*.js')
     .pipe(plumber())
-    .pipe(mocha({reporter: 'spec'}))
+    .pipe(mocha({reportesr: 'spec'}))
     .on('error', function (err) {
       mochaErr = err;
     })
