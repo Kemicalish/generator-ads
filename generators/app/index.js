@@ -76,6 +76,7 @@ module.exports = Generator.extend({
   writing: function () {
     switch(this.props.format) {
       case 'staticskin': staticSkin(this); break;
+      case 'preroll': break;
       default:break;
     }
   },
