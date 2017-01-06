@@ -1,17 +1,9 @@
 'use strict';
 const gulp = require('gulp');
-const eslint = require('gulp-eslint');
 const excludeGitignore = require('gulp-exclude-gitignore');
 const mocha = require('gulp-mocha');
 const plumber = require('gulp-plumber');
 
-gulp.task('static', function () {
-  return gulp.src('**/*.js')
-    .pipe(excludeGitignore())
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
-});
 
 gulp.task('nsp', function () {
 
@@ -41,4 +33,4 @@ gulp.task('watch', function () {
 });
 
 gulp.task('prepublish', ['nsp']);
-gulp.task('default', ['static', 'test']);
+gulp.task('default', ['test']);
