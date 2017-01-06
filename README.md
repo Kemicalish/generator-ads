@@ -3,3 +3,21 @@
 
 # generator-ads
 > Generator for Ad Format 
+
+## Installing / Getting started
+If you not already have Yeoman, install it globally (recommended)
+```shell
+npm install -g yo 
+```
+
+then install this generator
+```shell
+npm install generator-ads
+```
+
+and run it with
+```shell
+yo ads
+```
+
+Then just follow the prompt...

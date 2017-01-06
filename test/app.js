@@ -47,12 +47,11 @@ describe('STATIC SKIN', function () {
       assert.fileContent(backgroundTextFile, /#[0-9a-fA-F]+/);
   });
 
-  it(`${psdFile} should contain a BACKGROUND_IMG layer`, () => {
+  it(`${psdFile} should contain a WEBSITE group (with target website sample content)`, () => {
       const psd = PSD.fromFile(psdFile);
       psd.parse();
-      assert.file([
-        psdFile
-      ]);
+      const tree = psd.tree().export();
+      assert.ok(_.find(tree.children, {type: 'group', name: 'WEBSITE'}));
   });
 });
 
@@ -63,7 +62,7 @@ describe('PRE-ROLL', function () {
       .toPromise();
   });
 
-  it(`NO TEST YET, it should work ^^`, () => {
+  it('NO TEST YET, it should work ^^', () => {
       assert(true);
   });
 
@@ -76,7 +75,7 @@ describe('BAD FORMAT', function () {
       .toPromise();
   });
 
-  it(`NO TEST YET, it should work ^^`, () => {
+  it('NO TEST YET, it should work ^^', () => {
       //TODO: should assert an error 
       assert(true);
   });

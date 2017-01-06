@@ -4,6 +4,7 @@ const Generator = require('yeoman-generator');
 let _ = require('lodash');
 let settings = require('../conf.js');
 const mkdirp = require('mkdirp');
+const PSD = require('psd');
 
 const formats = [
   ['staticskin', 'Static Skin'],
@@ -16,7 +17,7 @@ function toChoices(arr) {
   });
 }
 
-function staticSkin(gen){
+function staticSkinWrite(gen){
   gen.fs.copy(
       gen.templatePath(`${settings.STATIC_SKIN_DIRNAME}/commons/**/*`),
       gen.destinationPath(settings.DESTINATION_DIRNAME),
@@ -24,29 +25,27 @@ function staticSkin(gen){
     );
 
     gen.fs.copy(
-      gen.templatePath(path.join(
-        settings.STATIC_SKIN_DIRNAME,
-        'custom',
-        'PROJECT_NAME_WEBSITE_NAME.jpg')),
-      gen.destinationPath(path.join(
-        settings.DESTINATION_DIRNAME,
-        `${gen.props.projectName}_${gen.props.websiteName}.jpg`)),
-      _.merge({}, settings, gen.props)
+      gen.templatePath(path.join(settings.STATIC_SKIN_DIRNAME, 'custom', 'PROJECT_NAME_WEBSITE_NAME.jpg')),
+      gen.destinationPath(path.join(settings.DESTINATION_DIRNAME, `${gen.props.projectName}_${gen.props.websiteName}.jpg`)),
+       _.merge({}, settings, gen.props)
     );
 
+    const psdOutputFile = path.join(settings.DESTINATION_DIRNAME, 'PSD', `${gen.props.projectName}_${gen.props.websiteName}.psd`);
     gen.fs.copy(
-      gen.templatePath(path.join(settings.STATIC_SKIN_DIRNAME,
-        'custom',
-        'PSD',
-        'PROJECT_NAME_WEBSITE_NAME.psd')),
-      gen.destinationPath(path.join(
-          settings.DESTINATION_DIRNAME,
-          'PSD',
-          `${gen.props.projectName}_${gen.props.websiteName}.psd`
-        )),
+      gen.templatePath(path.join(settings.STATIC_SKIN_DIRNAME, 'custom', 'PSD', 'PROJECT_NAME_WEBSITE_NAME.psd')),
+      gen.destinationPath(psdOutputFile),
       _.merge({}, settings, gen.props)
     );
     mkdirp(gen.destinationPath(`${settings.DESTINATION_DIRNAME}/FONT`));
+}
+
+function staticSkinInstall(gen){
+  const psdOutputFile = path.join(settings.DESTINATION_DIRNAME, 'PSD', `${gen.props.projectName}_${gen.props.websiteName}.psd`);
+  const psd = PSD.fromFile(psdOutputFile);
+  psd.parse();
+
+  //show the output PSD Tree Structure
+  gen.log(psd.tree().export());
 }
 
 module.exports = Generator.extend({
@@ -55,11 +54,13 @@ module.exports = Generator.extend({
       type: 'input',
       name: 'projectName',
       message: 'The Project Name (ex: CLIENTGAME_LAUNCH)',
+      default: 'CLIENT_PROJECT',
       store: true
     }, {
       type: 'input',
       name: 'websiteName',
-      message: 'The Website Destination Name (ex: JVCOM)'
+      message: 'The Website Destination Name (ex: JVCOM)',
+      default: 'DEST_WEBSITE'
     }, {
       type: 'list',
       name: 'format',
@@ -75,13 +76,17 @@ module.exports = Generator.extend({
   },
   writing: function () {
     switch(this.props.format) {
-      case 'staticskin': staticSkin(this); break;
+      case 'staticskin': staticSkinWrite(this); break;
       case 'preroll': break;
       default:break;
     }
   },
 
   install: function () {
-    //this.installDependencies();
+    switch(this.props.format) {
+      case 'staticskin': staticSkinInstall(this); break;
+      case 'preroll': break;
+      default:break;
+    }
   }
 });
