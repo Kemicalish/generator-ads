@@ -11,6 +11,16 @@ const testPrompt = {
 
 let settings = require('../generators/conf.js');
 
+const backgroundTextFile = path.join(settings.DESTINATION_DIRNAME, 'background_color.txt');
+
+const expectedFiles = [
+  path.join(settings.DESTINATION_DIRNAME, 'DEMO', 'demo.html'),
+  path.join(settings.DESTINATION_DIRNAME, 'DEMO', 'static_skin_demo.jpg'),
+  backgroundTextFile,
+  path.join(settings.DESTINATION_DIRNAME, 'PSD', `${testPrompt.projectName}_${testPrompt.websiteName}.psd`),
+  path.join(settings.DESTINATION_DIRNAME, `${testPrompt.projectName}_${testPrompt.websiteName}.jpg`)
+];
+
 describe('generator-ads:app', function () {
   before(function () {
     return helpers.run(path.join(__dirname, '../generators/app'))
@@ -18,18 +28,16 @@ describe('generator-ads:app', function () {
       .toPromise();
   });
 
-  _.each([
-    path.join(settings.DESTINATION_DIRNAME, 'DEMO', 'demo.html'),
-    path.join(settings.DESTINATION_DIRNAME, 'DEMO', 'static_skin_demo.jpg'),
-    path.join(settings.DESTINATION_DIRNAME, 'background_color.txt'),
-    path.join(settings.DESTINATION_DIRNAME, 'PSD', `${testPrompt.projectName}_${testPrompt.websiteName}.psd`),
-    path.join(settings.DESTINATION_DIRNAME, `${testPrompt.projectName}_${testPrompt.websiteName}.jpg`)
-  ], file => {
+  _.each(expectedFiles, file => {
     it('creates ' + file, function () {
       assert.file([
         file
       ]);
     });
+  });
+
+  it(`${backgroundTextFile} should contain a default color in hex`, () => {
+      assert.fileContent(backgroundTextFile, /#[0-9a-fA-F]+/);
   });
 
 });
